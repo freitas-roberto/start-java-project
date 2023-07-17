@@ -11,10 +11,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -42,7 +44,7 @@ public class RoleController {
 	private RoleService roleService;
 
 	@PreAuthorize("hasPermission('role', 'read') or hasRole('SYSTEM')")
-	@RequestMapping(value = "/role/{id}", method = RequestMethod.GET)
+	@GetMapping(value = "/role/{id}")
 	@Operation(summary = "Find by role id", description = "Method used to find an Organization by role id")
 	public ResponseEntity<RoleDto> getRole(@PathVariable("id") long id) {
 		RoleDto roleDto = roleService.getRole(id);
@@ -50,7 +52,7 @@ public class RoleController {
 	}
 
 	@PreAuthorize("hasPermission('role', 'read') or hasRole('SYSTEM')")
-	@RequestMapping(value = "/role", method = RequestMethod.GET)
+	@GetMapping(value = "/role")
 	@Operation(summary = "Find by name", description = "Method used to find an Organization by name")
 	public ResponseEntity<RoleDto> getRole(@RequestParam(name="name", required=true) String roleName) {
 		RoleDto roleDto = roleService.getRole(roleName);
@@ -58,7 +60,7 @@ public class RoleController {
 	}
 
 	@PreAuthorize("hasPermission('role', 'read') or hasRole('SYSTEM')")
-	@RequestMapping(value = "/roles", method = RequestMethod.GET)
+	@GetMapping(value = "/roles")
 	@Operation(summary = "Find all Roles", description = "Method used to find all Roles")
 	public ResponseEntity<List<RoleDto>> getRoles() {
 		List<RoleDto> roles = roleService.getRoles();
@@ -66,7 +68,7 @@ public class RoleController {
 	}
 
 	@PreAuthorize("hasPermission('role', 'read') or hasRole('SYSTEM')")
-	@RequestMapping(value = "/roles/page", method = RequestMethod.GET)
+	@GetMapping(value = "/roles/page")
 	@Operation(summary = "Find all Roles", description = "Method used to find all Roles and show per page")
 	public ResponseEntity<Page<RoleDto>> getRoles(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "size", defaultValue = "20") Integer size,
@@ -78,7 +80,7 @@ public class RoleController {
 	}
 
 	@PreAuthorize("hasPermission('role', 'write') or hasRole('SYSTEM')")
-	@RequestMapping(value = "/role", method = RequestMethod.POST)
+	@PostMapping(value = "/role")
 	@Operation(summary = "Add a new Role", description = "Method used to add a new Role")
 	public ResponseEntity<Void> writeRole(@Validated @RequestBody RoleDto roleDto) {
 		RoleDto createdRole = roleService.createRole(roleDto);
@@ -88,7 +90,7 @@ public class RoleController {
 	}
 
 	@PreAuthorize("hasPermission('role', 'delete') or hasRole('SYSTEM')")
-	@RequestMapping(value = "/role/{roleid}", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "/role/{roleid}")
 	@Operation(summary = "Delete by role id", description = "Method used to delete an Role by role id")
 	public ResponseEntity<Void> deleteRole(@PathVariable("id") long id) throws Exception {
 		roleService.deleteRole(id);
@@ -96,7 +98,7 @@ public class RoleController {
 	}
 
 	@PreAuthorize("hasPermission('role:user', 'write') or hasRole('SYSTEM')")
-	@RequestMapping(value = "/role/user", method = RequestMethod.POST)
+	@PostMapping(value = "/role/user")
 	@Operation(summary = "Add a Role to the User", description = "Method used to add a new Role to the User")
 	public ResponseEntity<Void> addRoleToUser(@RequestBody RoleToUserForm form) {
 		roleService.addRoleToUser(form.getUsername(), form.getRoleName());

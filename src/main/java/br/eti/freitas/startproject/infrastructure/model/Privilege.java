@@ -18,7 +18,7 @@ import org.springframework.security.core.GrantedAuthority;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "PRIVILEGE", schema = "security", uniqueConstraints = {
+@Table(name = "PRIVILEGE", uniqueConstraints = {
 		@UniqueConstraint(columnNames = { "resource", "type" }) })
 @SQLDelete(sql = "UPDATE PRIVILEGE SET deleted=true WHERE id=?")
 @Where(clause = "deleted=false")

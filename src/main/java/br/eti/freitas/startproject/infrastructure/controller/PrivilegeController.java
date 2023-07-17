@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -62,14 +61,14 @@ public class PrivilegeController {
 	@Operation(summary = "Find Privilegeby privilege name", description = "Method used to find an Privilege by privilege name")
 
 	@PreAuthorize("hasPermission('privilege','read') or hasRole('SYSTEM')")
-	@RequestMapping(value = "/privilege/", method = RequestMethod.GET)
+	@GetMapping(value = "/privilege/")
 	public ResponseEntity<PrivilegeDto> getPrivilege(@RequestParam(name = "name", required = true) String privilegeName) {
 		PrivilegeDto privilegeDto = privilegeService.getPrivilege(privilegeName);
 		return ResponseEntity.ok().body(privilegeDto);
 	}
 
 	@PreAuthorize("hasPermission('privilege','read') or hasRole('SYSTEM')")
-	@RequestMapping(value = "/privileges", method = RequestMethod.GET)
+	@GetMapping(value = "/privileges")
 	@Operation(summary = "Find all Privileges", description = "Method used to find all Privileges")
 	public ResponseEntity<List<PrivilegeDto>> getPrivileges() {
 		List<PrivilegeDto> privileges = privilegeService.getPrivileges();
@@ -77,7 +76,7 @@ public class PrivilegeController {
 	}
 
 	@PreAuthorize("hasPermission('privilege','read') or hasRole('SYSTEM')")
-	@RequestMapping(value = "/privileges/page", method = RequestMethod.GET)
+	@GetMapping(value = "/privileges/page")
 	@Operation(summary = "Find all Privileges paginated", description = "Method used to find all Privileges and show per page")
 	@ApiResponses(@ApiResponse(responseCode = "206", description = "Partial Content", content = @Content(mediaType = "application/json", schema = @Schema(implementation = PrivilegeDto.class))))
 	public ResponseEntity<Page<PrivilegeDto>> getPrivileges(

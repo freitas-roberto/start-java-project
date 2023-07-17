@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import br.eti.freitas.startproject.model.Organization;
 
 @Entity
-@Table(name = "USER", schema = "security")
+@Table(name = "USER")
 @SQLDelete(sql="UPDATE USER SET deleted = true WHERE id=?")
 @Where(clause="deleted=false")
 public class User {

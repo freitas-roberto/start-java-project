@@ -21,7 +21,7 @@ import org.springframework.security.core.GrantedAuthority;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "ROLE", schema = "security")
+@Table(name = "ROLE")
 @SQLDelete(sql="UPDATE ROLE SET deleted=true WHERE id=?")
 @Where(clause="deleted=false")
 public class Role implements GrantedAuthority {

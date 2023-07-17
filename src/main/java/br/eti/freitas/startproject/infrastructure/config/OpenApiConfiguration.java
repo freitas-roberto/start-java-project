@@ -3,7 +3,6 @@ package br.eti.freitas.startproject.infrastructure.config;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import br.eti.freitas.startproject.infrastructure.constant.ApplicationConstant;
@@ -36,7 +35,7 @@ public class OpenApiConfiguration {
 	 * @return - Endpoint definitions to authenticate API
 	 * 
 	 */	
-    @Bean
+//    @Bean
     public GroupedOpenApi authenticateApi() {
 		final String[] pathsToMatch = {SecurityConstant.SECURITY_JWT_URI_AUTHENTICATE}; 
     	final String[] packagesToScan = {SecurityConstant.SCURIRTY_JWT_PACKAGE_AUTHENTICATE};
@@ -56,7 +55,7 @@ public class OpenApiConfiguration {
 	 * @return - Endpoint definitions to application API
 	 * 
 	 */	
-    @Bean
+//    @Bean
     public GroupedOpenApi applicationApi() {
 		final String[] pathsToMatch = {SecurityConstant.SECURITY_JWT_URI_APPLICATION}; 
 		final String[] packagesToScan = {SecurityConstant.SCURIRTY_JWT_PACKAGE_APPLICATION, "br.eti.freitas.startproject.dto"};
@@ -76,7 +75,7 @@ public class OpenApiConfiguration {
 	 * @return - Endpoint definitions to application API
 	 * 
 	 */	
-    @Bean
+//    @Bean
     public GroupedOpenApi infrastructureApi() {
 		final String[] pathsToMatch = {SecurityConstant.SECURITY_JWT_URI_APPLICATION}; 
 		final String[] packagesToScan = {SecurityConstant.SCURIRTY_JWT_PACKAGE_AUTHENTICATE, "br.eti.freitas.startproject.infrastructure.dto"};
@@ -100,7 +99,7 @@ public class OpenApiConfiguration {
 	 * Add field x-tenant in header
 	 * @return
 	 */
-	@Bean
+//	@Bean
 	public OperationCustomizer customizeTenant() {
 	    return (operation, handlerMethod) -> operation.addParametersItem(
 	            new Parameter()
