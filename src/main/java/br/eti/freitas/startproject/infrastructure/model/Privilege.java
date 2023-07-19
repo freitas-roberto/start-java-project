@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "PRIVILEGE", uniqueConstraints = {
-		@UniqueConstraint(columnNames = { "resource", "type" }) })
+		@UniqueConstraint(name = "UK_PRIVILEGE_001", columnNames = { "resource", "type" }) })
 @SQLDelete(sql = "UPDATE PRIVILEGE SET deleted=true WHERE id=?")
 @Where(clause = "deleted=false")
 public class Privilege implements GrantedAuthority {

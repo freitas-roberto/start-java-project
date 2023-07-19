@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -21,7 +22,8 @@ import org.springframework.security.core.GrantedAuthority;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "ROLE")
+@Table(name = "ROLE", uniqueConstraints = {
+		@UniqueConstraint(name = "UK_ROLE_002", columnNames = { "name"}) })
 @SQLDelete(sql="UPDATE ROLE SET deleted=true WHERE id=?")
 @Where(clause="deleted=false")
 public class Role implements GrantedAuthority {
@@ -49,7 +51,7 @@ public class Role implements GrantedAuthority {
     private Collection<User> users;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "ROLES_PRIVILEGES", schema = "security",
+	@JoinTable(name = "ROLES_PRIVILEGES",
 				 joinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")},
 				   inverseJoinColumns = {@JoinColumn(name = "privilege_id", referencedColumnName = "id")})
 	private Collection<Privilege> privileges = new ArrayList<>();

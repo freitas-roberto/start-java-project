@@ -14,6 +14,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.SQLDelete;
@@ -24,7 +25,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import br.eti.freitas.startproject.model.Organization;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "USER", uniqueConstraints = {
+		@UniqueConstraint(name = "UK_USER_001", columnNames = { "email"}) ,
+		@UniqueConstraint(name = "UK_USER_002", columnNames = { "username"}) })
 @SQLDelete(sql="UPDATE USER SET deleted = true WHERE id=?")
 @Where(clause="deleted=false")
 public class User {
@@ -53,14 +56,14 @@ public class User {
 	private Organization organization;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "USERS_ROLES", schema = "security",
+	@JoinTable(name = "USERS_ROLES",
 				joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
 				  inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
 	@Fetch(org.hibernate.annotations.FetchMode.SUBSELECT)
 	private Collection<Role> roles = new ArrayList<>();
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "USERS_PRIVILEGES", schema = "security",
+	@JoinTable(name = "USERS_PRIVILEGES",
 				 joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
 				   inverseJoinColumns = {@JoinColumn(name = "privilege_id", referencedColumnName = "id")})
 	@Fetch(org.hibernate.annotations.FetchMode.SUBSELECT)

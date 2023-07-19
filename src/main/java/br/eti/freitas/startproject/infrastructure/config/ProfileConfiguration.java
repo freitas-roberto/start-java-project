@@ -34,12 +34,14 @@ public class ProfileConfiguration {
 	@Bean
 	public void initialSetup() throws ParseException {
 
-		LOG.info(">>> ACTIVE PROFILE {} , {} <<<", profile, strategy);
+		LOG.info(">>> ACTIVE PROFILE {} WITH STRATEGY {} <<<", profile, strategy);
 
-		if ("create".equals(strategy)) {
-			if (profile.equals("dev")) {
+		if ("create".equalsIgnoreCase(strategy) || "create-drop".equalsIgnoreCase(strategy)) {
+			if ("dev".equalsIgnoreCase(profile)) {
 				databaseService.uploadOthersDatabases();		
-			} else if (profile.equals("prod")) {
+			} else if ("test".equalsIgnoreCase(profile)) {
+				databaseService.uploadOthersDatabases();		
+			} else if ("prod".equalsIgnoreCase(profile)) {
 				databaseService.uploadProductionDatabase();						
 			} else {
 				LOG.info("Environment does not especified.");
