@@ -17,12 +17,19 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.parameters.Parameter;
 
+/**
+ * Enable Swagger for groups of app endpoints
+ *
+ * @author Roberto Freitas
+ * @version 1.0
+ * @since 2023-03-01
+ */
 @Configuration
 @OpenAPIDefinition(security = {@SecurityRequirement(name = "bearerToken")})
 @SecuritySchemes({
 	@SecurityScheme(
         name = "bearerAuth",
-   		description = "Provide the JWT token. JWT token can be obtained from the Login API. For testing, use the credentials <strong>sys/1234</strong>",
+   		description = "Provide the JWT token. JWT token can be obtained from the Login API.",
         type = SecuritySchemeType.HTTP,
         scheme = "bearer",
         bearerFormat = "JWT"
@@ -30,12 +37,7 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 })
 public class OpenApiConfiguration {
 	
-	/**
-	 * Authenticate API - Endpoint used to authenticate the user in the application and infraestructure API.
-	 * @return - Endpoint definitions to authenticate API
-	 * 
-	 */	
-//    @Bean
+	/* Authentication endpoints are used to grant access on system operations */	
     public GroupedOpenApi authenticateApi() {
 		final String[] pathsToMatch = {SecurityConstant.SECURITY_JWT_URI_AUTHENTICATE}; 
     	final String[] packagesToScan = {SecurityConstant.SCURIRTY_JWT_PACKAGE_AUTHENTICATE};
@@ -50,12 +52,7 @@ public class OpenApiConfiguration {
                 .build();
     }
 	
-	/**
-	 * Authenticate API - Endpoint used to authenticate to consume application services API.
-	 * @return - Endpoint definitions to application API
-	 * 
-	 */	
-//    @Bean
+	/* Application endpoints are commonly used for application operations */	
     public GroupedOpenApi applicationApi() {
 		final String[] pathsToMatch = {SecurityConstant.SECURITY_JWT_URI_APPLICATION}; 
 		final String[] packagesToScan = {SecurityConstant.SCURIRTY_JWT_PACKAGE_APPLICATION, "br.eti.freitas.startproject.dto"};
@@ -70,12 +67,7 @@ public class OpenApiConfiguration {
                 .build();
     }    
     
-	/**
-	 * Application API - Endpoint used to authenticate to consume infraestructure services API.
-	 * @return - Endpoint definitions to application API
-	 * 
-	 */	
-//    @Bean
+	/* The infrastructure endpoints is used to manage the security of API services */	
     public GroupedOpenApi infrastructureApi() {
 		final String[] pathsToMatch = {SecurityConstant.SECURITY_JWT_URI_APPLICATION}; 
 		final String[] packagesToScan = {SecurityConstant.SCURIRTY_JWT_PACKAGE_AUTHENTICATE, "br.eti.freitas.startproject.infrastructure.dto"};
@@ -95,25 +87,17 @@ public class OpenApiConfiguration {
             .info(apiInfo());
     }
     
-	/**
-	 * Add field x-tenant in header
-	 * @return
-	 */
-//	@Bean
+	/* add global header x-tenant */
 	public OperationCustomizer customizeTenant() {
 	    return (operation, handlerMethod) -> operation.addParametersItem(
 	            new Parameter()
 	                    .in("header")
 	                    .required(true)
-	                    .description("Organization Key identification")
+	                    .description("Tenant identification")
 	                    .name("X-TenantId"));
 	}
 
-
-    /**
-     * API description
-     * @return 
-     */
+    /* API description */
 	private Info apiInfo() {
 		return new Info()
 				.title(ApplicationConstant.APPLICATION_TITLE)
@@ -122,22 +106,15 @@ public class OpenApiConfiguration {
 				.contact(apiContact())
 				.license(apiLicence());
 	}
-
 	
-    /**
-     * License information
-     * @return
-     */
+    /* License information */
 	private License apiLicence() {
 		return new License()
 				.name("MIT Licence")
 				.url("https://opensource.org/licenses/mit-license.php");
 	}
 
-	/**
-	 * Contact information
-	 * @return
-	 */
+	/* Contact information */
 	private Contact apiContact() {
 		return new Contact()
 				.name("Roberto Freitas")

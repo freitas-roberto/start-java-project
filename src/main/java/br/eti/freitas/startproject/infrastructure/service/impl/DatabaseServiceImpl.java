@@ -11,21 +11,20 @@ import org.springframework.stereotype.Service;
 
 import br.eti.freitas.startproject.dto.OrganizationDto;
 import br.eti.freitas.startproject.infrastructure.constant.SecurityConstant;
-import br.eti.freitas.startproject.infrastructure.custom.CustomPermissionEvaluator;
 import br.eti.freitas.startproject.infrastructure.dto.PrivilegeDto;
 import br.eti.freitas.startproject.infrastructure.dto.RoleDto;
 import br.eti.freitas.startproject.infrastructure.dto.UserDto;
-import br.eti.freitas.startproject.infrastructure.service.DataBaseService;
+import br.eti.freitas.startproject.infrastructure.service.DatabaseService;
 import br.eti.freitas.startproject.infrastructure.service.PrivilegeService;
 import br.eti.freitas.startproject.infrastructure.service.RoleService;
 import br.eti.freitas.startproject.infrastructure.service.UserService;
 import br.eti.freitas.startproject.service.OrganizationService;
 
-@Transactional
 @Service
-public class DataBaseServiceImpl implements DataBaseService {
+@Transactional
+public class DatabaseServiceImpl implements DatabaseService {
 
-	private static final Logger LOG = LoggerFactory.getLogger(CustomPermissionEvaluator.class);
+	private static final Logger LOG = LoggerFactory.getLogger(DatabaseServiceImpl.class);
 
 	@Autowired
 	private OrganizationService organizationService;
@@ -39,16 +38,33 @@ public class DataBaseServiceImpl implements DataBaseService {
 	@Autowired
 	private PrivilegeService privilegeService;
 
-	@Override
-	public void uploadDeveloperDataBase() {
+	private static String roleSystem = SecurityConstant.SECURITY_JWT_DEFAULT_ROLE_PREFIX + "SYSTEM";
+	private static String roleManager = SecurityConstant.SECURITY_JWT_DEFAULT_ROLE_PREFIX + "MANAGER";
+	private static String roleUser = SecurityConstant.SECURITY_JWT_DEFAULT_ROLE_PREFIX + "USER";
+	
+	public void uploadOthersDatabases() {
 
-		LOG.info("Upload 'Developer' Database - Starting...");
+		LOG.info("Start data load on 'NON PRODUCTIVE' Database.");
 
-		String roleSystem = SecurityConstant.SECURITY_JWT_DEFAULT_ROLE_PREFIX + "SYSTEM";
-		String roleManager = SecurityConstant.SECURITY_JWT_DEFAULT_ROLE_PREFIX + "MANAGER";
-		String roleUser = SecurityConstant.SECURITY_JWT_DEFAULT_ROLE_PREFIX + "USER";
-		
-		// Add Organization
+		try {
+			forOthersEnvironments();
+		} catch (Exception ex) {
+			LOG.info("Failure of environment data load! {}", ex);			
+		}
+	}
+	
+	public void uploadProductionDatabase() {
+		LOG.info("Start data load on 'PRODUCTIVE' Database.");
+		try {
+			forProductionEnvironment();
+		} catch (Exception ex) {
+			LOG.info("Failure of environment data load! {}", ex);			
+		}
+	}
+
+	private void forOthersEnvironments() {
+
+		LOG.info("Add Organizations...");
 		OrganizationDto org1 = new OrganizationDto();
 		org1.setName("Empresa Teste 1");
 		org1.setEmail("empresa1@teste.com.br");
@@ -63,7 +79,7 @@ public class DataBaseServiceImpl implements DataBaseService {
 		org2.setEnabled(true);
 		organizationService.createOrganization(org2);		
 		
-		// Add users
+		LOG.info("Add Users...");
 		UserDto user1 = new UserDto();
 		user1.setName("System User Administrator");
 		user1.setEmail("sys@freitas.eti.br");
@@ -85,7 +101,7 @@ public class DataBaseServiceImpl implements DataBaseService {
 		user3.setPassword("1234");
 		userService.createUser(user3);
 
-		// Add roles
+		LOG.info("Add Roles...");
 		RoleDto role1 = new RoleDto();
 		role1.setName(roleSystem);
 		role1.setDescription("Role for system administrator");
@@ -106,7 +122,7 @@ public class DataBaseServiceImpl implements DataBaseService {
 		roleService.addRoleToUser("operator", roleManager);
 		roleService.addRoleToUser("user", roleUser);
 
-		// Add "Organization" Privileges		
+		LOG.info("Add Privileges for Organization...");
 		PrivilegeDto privilegeOrganization1 = new PrivilegeDto();
 		privilegeOrganization1.setResource("organization");
 		privilegeOrganization1.setType("read");
@@ -125,7 +141,7 @@ public class DataBaseServiceImpl implements DataBaseService {
 		privilegeOrganization3.setEnabled(true);
 		privilegeService.createPrivilege(privilegeOrganization3);
 		
-		// Add "User" Privileges		
+		LOG.info("Add Privileges for User...");
 		PrivilegeDto privilegeUser1 = new PrivilegeDto();
 		privilegeUser1.setResource("user");
 		privilegeUser1.setType("read");
@@ -144,7 +160,7 @@ public class DataBaseServiceImpl implements DataBaseService {
 		privilegeUser3.setEnabled(true);
 		privilegeService.createPrivilege(privilegeUser3);
 		
-		// Add "Role" Privileges		
+		LOG.info("Add Privileges for Role...");
 		PrivilegeDto privilegeRole1 = new PrivilegeDto();
 		privilegeRole1.setResource("role");
 		privilegeRole1.setType("read");
@@ -163,7 +179,7 @@ public class DataBaseServiceImpl implements DataBaseService {
 		privilegeRole3.setEnabled(true);
 		privilegeService.createPrivilege(privilegeRole3);
 	
-		// Add "Privilege" Privileges		
+		LOG.info("Add Privileges for Privileges...");
 		PrivilegeDto privilegePrivilege1 = new PrivilegeDto();
 		privilegePrivilege1.setResource("privilege");
 		privilegePrivilege1.setType("read");
@@ -176,7 +192,7 @@ public class DataBaseServiceImpl implements DataBaseService {
 		privilegePrivilege2.setEnabled(true);
 		privilegeService.createPrivilege(privilegePrivilege2);
 
-		// Add Privilege to Role MANAGER
+		LOG.info("Add Privileges for ROLE Manager...");
 		privilegeService.addPrivilegeToRole(roleManager, privilegeUser1.getResource(), privilegeUser1.getType());
 		privilegeService.addPrivilegeToRole(roleManager, privilegeUser2.getResource(), privilegeUser2.getType());
 		privilegeService.addPrivilegeToRole(roleManager, privilegeUser3.getResource(), privilegeUser3.getType());
@@ -189,29 +205,20 @@ public class DataBaseServiceImpl implements DataBaseService {
 		privilegeService.addPrivilegeToRole(roleManager, privilegeOrganization2.getResource(), privilegeOrganization2.getType());
 		privilegeService.addPrivilegeToRole(roleManager, privilegeOrganization3.getResource(), privilegeOrganization3.getType());
 
-		// Add Privilege to Role user
+		LOG.info("Add Privileges for ROLE User...");
 		privilegeService.addPrivilegeToRole(roleUser, privilegeUser1.getResource(), privilegeUser1.getType());
 		privilegeService.addPrivilegeToRole(roleUser, privilegeRole1.getResource(), privilegeRole1.getType());
 		privilegeService.addPrivilegeToRole(roleUser, privilegeOrganization1.getResource(), privilegeOrganization1.getType());
 
-
-		// Add privilege to user
+		LOG.info("Add Privileges for ROLE Operator...");
 		userService.addPrivilegeToUser("operator", privilegeOrganization1.getResource(), privilegeOrganization1.getType());
 		userService.addPrivilegeToUser("operator", privilegeRole1.getResource(), privilegeRole1.getType());
 
-		LOG.info("Complete upload...");
-
 	}
-
 	
-	@Override
-	public void uploadTestDataBase() {
+	private void forProductionEnvironment() {
 
-		String roleSystem = SecurityConstant.SECURITY_JWT_DEFAULT_ROLE_PREFIX + "SYSTEM";
-
-		LOG.info("Upload 'Test' Database - Starting...");
-
-		// Add Organization
+		LOG.info("Add Principal Organization...");
 		OrganizationDto org1 = new OrganizationDto();
 		org1.setName("UsinaTECH");
 		org1.setEmail("contato@usinatech.com.br");
@@ -219,7 +226,7 @@ public class DataBaseServiceImpl implements DataBaseService {
 		org1.setEnabled(false);
 		organizationService.createOrganization(org1);
 
-		// Add users
+		LOG.info("Add System Administator User...");
 		UserDto user1 = new UserDto();
 		user1.setName("System ADMINSTRATOR");
 		user1.setEmail("contato@usinateh.com.br");
@@ -227,18 +234,16 @@ public class DataBaseServiceImpl implements DataBaseService {
 		user1.setPassword("1234");
 		userService.createUser(user1);
 		
-		// Add roles
+		LOG.info("Add SYSTEM Role...");
 		RoleDto role1 = new RoleDto();
 		role1.setName(roleSystem);
 		role1.setDescription("Role for system administrator");
 		role1.setEnabled(true);
 		roleService.createRole(role1);
 		
-		// Associate users and roles
+		LOG.info("Associate SYS user into a SYSTEM role.");
 		roleService.addRoleToUser("sys", roleSystem);
 
-		
-		LOG.info("Complete upload...");
 	}
-	
+
 }

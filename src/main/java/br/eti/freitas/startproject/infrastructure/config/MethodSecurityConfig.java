@@ -8,6 +8,13 @@ import org.springframework.security.config.annotation.method.configuration.Globa
 import br.eti.freitas.startproject.infrastructure.custom.CustomPermissionEvaluator;
 import br.eti.freitas.startproject.infrastructure.handler.CustomMethodSecurityExpressionHandler;
 
+/**
+ * Defines method of global security
+ *
+ * @author Roberto Freitas
+ * @version 1.0
+ * @since 2023-03-01
+ */
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {

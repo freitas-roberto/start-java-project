@@ -8,9 +8,5 @@ public class ApplicationConstant {
 	public static String APPLICATION_TITLE = "Reference API For Developers";
 	public static String APPLICATION_DESCRIPTION = "Use this project with a reference for your projects.";
 	public static String APPLICATION_VERSION = "1.0";
-	
-			
-			
-	
-	
+		
 }
