@@ -14,6 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import br.eti.freitas.startproject.infrastructure.constant.SecurityConstant;
 import br.eti.freitas.startproject.infrastructure.filter.SecurityRequestFilter;
@@ -57,6 +60,21 @@ public class SecurityConfiguration  {
 		return authProvider;
 	}
 
+	@Bean
+	public CorsFilter corsFilter() {
+	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+	    // Allow anyone and anything access. Probably ok for Swagger spec
+	    CorsConfiguration config = new CorsConfiguration();
+	    config.setAllowCredentials(true);
+	    config.addAllowedOrigin("*");
+	    config.addAllowedHeader("*");
+	    config.addAllowedMethod("*");
+
+	    source.registerCorsConfiguration("/v3/api-docs", config);
+	    return new CorsFilter(source);
+	}
+	
     protected static final String[] ACTUATOR_WHITELIST = {
             "/actuator/**"
         };

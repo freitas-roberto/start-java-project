@@ -3,6 +3,7 @@ package br.eti.freitas.startproject.infrastructure.config;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import br.eti.freitas.startproject.infrastructure.constant.ApplicationConstant;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.security.SecuritySchemes;
+import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
@@ -25,7 +27,7 @@ import io.swagger.v3.oas.models.parameters.Parameter;
  * @since 2023-03-01
  */
 @Configuration
-@OpenAPIDefinition(security = {@SecurityRequirement(name = "bearerToken")})
+@OpenAPIDefinition(servers = {@Server(url = "/")}, security = {@SecurityRequirement(name = "bearerToken")})
 @SecuritySchemes({
 	@SecurityScheme(
         name = "bearerAuth",
@@ -38,6 +40,7 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 public class OpenApiConfiguration {
 	
 	/* Authentication endpoints are used to grant access on system operations */	
+	@Bean
     public GroupedOpenApi authenticateApi() {
 		final String[] pathsToMatch = {SecurityConstant.SECURITY_JWT_URI_AUTHENTICATE}; 
     	final String[] packagesToScan = {SecurityConstant.SCURIRTY_JWT_PACKAGE_AUTHENTICATE};
@@ -53,6 +56,7 @@ public class OpenApiConfiguration {
     }
 	
 	/* Application endpoints are commonly used for application operations */	
+	@Bean
     public GroupedOpenApi applicationApi() {
 		final String[] pathsToMatch = {SecurityConstant.SECURITY_JWT_URI_APPLICATION}; 
 		final String[] packagesToScan = {SecurityConstant.SCURIRTY_JWT_PACKAGE_APPLICATION, "br.eti.freitas.startproject.dto"};
@@ -68,6 +72,7 @@ public class OpenApiConfiguration {
     }    
     
 	/* The infrastructure endpoints is used to manage the security of API services */	
+	@Bean
     public GroupedOpenApi infrastructureApi() {
 		final String[] pathsToMatch = {SecurityConstant.SECURITY_JWT_URI_APPLICATION}; 
 		final String[] packagesToScan = {SecurityConstant.SCURIRTY_JWT_PACKAGE_AUTHENTICATE, "br.eti.freitas.startproject.infrastructure.dto"};

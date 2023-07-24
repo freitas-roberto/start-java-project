@@ -3,12 +3,11 @@ C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\in
 C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\infrastructure\dto\ErrorDto.java
 C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\StartProjectApplication.java
 C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\infrastructure\dto\RoleDto.java
+C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\infrastructure\config\ProfileConfiguration.java
 C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\infrastructure\dto\PrivilegeDto.java
-C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\infrastructure\config\EnvironmentDeveloperConfiguration.java
 C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\infrastructure\controller\UserController.java
 C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\infrastructure\service\AuthenticateService.java
 C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\infrastructure\util\JwtUtil.java
-C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\infrastructure\config\EnvironmentTestConfiguration.java
 C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\service\impl\OrganizationServiceImpl.java
 C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\dto\OrganizationDto.java
 C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\infrastructure\custom\CustomSecurityExpressionRoot.java
@@ -28,7 +27,7 @@ C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\in
 C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\mapper\OrganizationMapper.java
 C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\infrastructure\config\ApplicationConfiguration.java
 C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\infrastructure\controller\AuthenticateController.java
-C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\infrastructure\service\impl\DataBaseServiceImpl.java
+C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\infrastructure\service\impl\DatabaseServiceImpl.java
 C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\infrastructure\util\LowerCaseClassNameResolver.java
 C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\model\Organization.java
 C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\infrastructure\constant\ApplicationConstant.java
@@ -55,7 +54,7 @@ C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\in
 C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\infrastructure\model\User.java
 C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\infrastructure\controller\PrivilegeController.java
 C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\infrastructure\model\Privilege.java
-C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\infrastructure\service\DataBaseService.java
+C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\infrastructure\service\DatabaseService.java
 C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\infrastructure\custom\CustomPermissionEvaluator.java
 C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\infrastructure\config\SecurityConfiguration.java
 C:\Projetos\Java\start-java-project\src\main\java\br\eti\freitas\startproject\infrastructure\dto\TokenDto.java
